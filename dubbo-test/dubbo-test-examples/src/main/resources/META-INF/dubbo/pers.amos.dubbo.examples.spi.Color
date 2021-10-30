@@ -1,0 +1,2 @@
+green = pers.amos.dubbo.examples.spi.Green
+red = pers.amos.dubbo.examples.spi.Red
