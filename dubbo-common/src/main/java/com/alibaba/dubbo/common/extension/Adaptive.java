@@ -55,6 +55,23 @@ public @interface Adaptive {
      *
      * @return parameter key names in URL
      */
+    /**
+     * 该注解可以用在两个地方：
+     * 1.用在类上，Dubbo 不会为该类生成代理类（情况较少）
+     * 2.用在方法上，Dubbo 会为该方法生成代理逻辑
+     * 在 Dubbo 中，仅有两个类被 Adaptive 注解了，分别是 AdaptiveCompiler 和 AdaptiveExtensionFactory。此种情况表示拓展的加载逻辑由人工编码完成。
+     * 更多时候，Adaptive 是注解在接口方法上的，表示拓展的加载逻辑需由框架自动生成。
+     *
+     * 加载拓展类的时候会从URL中根据key来获取参数的值
+     * 而下面的value数组就是用来定义这些参数的key的
+     * 例如：<code>String[] {"key1", "key2"}</code>:
+     * 1.优先尝试从URL中取出key1的值作为拓展类名
+     * 2.如果key1对应的值不存在，则尝试取出key2的值作为拓展类名
+     * 3.如果key1和key2都不存在，则尝试获取@SPI注解的value值作为默认的拓展类名称，比如Protocol的默认拓展类名为dubbo
+     * 4.如果默认拓展类名不存在则生成一个拓展类名称，YyyInvokerWrapper -> yyy.invoker.wrapper
+     *
+     * @return
+     */
     String[] value() default {};
 
 }
