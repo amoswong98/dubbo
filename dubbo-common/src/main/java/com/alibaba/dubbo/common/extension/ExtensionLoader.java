@@ -519,6 +519,8 @@ public class ExtensionLoader<T> {
             // 循环创建 Wrapper 实例
             if (wrapperClasses != null && !wrapperClasses.isEmpty()) {
                 for (Class<?> wrapperClass : wrapperClasses) {
+                    // 将当前 instance 作为参数创建 Wrapper 实例，然后向 Wrapper 实例中注入属性值，
+                    // 并将 Wrapper 实例赋值给 instance
                     instance = injectExtension((T) wrapperClass.getConstructor(type).newInstance(instance));
                 }
             }
