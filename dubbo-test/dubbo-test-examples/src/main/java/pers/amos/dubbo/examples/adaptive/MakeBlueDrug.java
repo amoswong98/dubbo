@@ -12,14 +12,15 @@ import com.alibaba.dubbo.common.URL;
  * AdaptiveMakeDrugProxy就会从url中获取拓展类的名称，然后调用具体拓展类的方法
  */
 
-public class MakeBlueDrug {
+public class MakeBlueDrug implements MakeDrug{
     private MakeDrug makeDrug;
 
     public void setMakeDrug(MakeDrug makeDrug) {
         this.makeDrug = makeDrug;
     }
 
-    public void makeBlueDrug(URL url) {
-        makeDrug.makeIcedDrug(url);
+    @Override
+    public void makeIcedDrug(URL url) {
+        System.out.println("make blue drug...");
     }
 }

@@ -1,7 +1,6 @@
 package pers.amos.dubbo.examples.adaptive;
 
 import com.alibaba.dubbo.common.URL;
-import com.alibaba.dubbo.common.extension.Adaptive;
 
 /**
  * @author amos wong
@@ -9,6 +8,5 @@ import com.alibaba.dubbo.common.extension.Adaptive;
  */
 
 public interface MakeDrug {
-    @Adaptive
     void makeIcedDrug(URL url);
 }
