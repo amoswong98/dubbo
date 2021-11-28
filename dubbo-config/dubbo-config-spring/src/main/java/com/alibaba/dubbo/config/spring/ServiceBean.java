@@ -97,12 +97,26 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         return service;
     }
 
+    /**
+     * 1.onApplicationEvent 是一个事件响应方法，该方法会在收到 Spring 上下文刷新事件后执行。
+     * 这个方法首先会根据条件决定是否导出服务，比如有些服务设置了延时导出，那么此时就不应该在此处导出。
+     * 还有一些服务已经被导出了，或者当前服务被取消导出了，此时也不能再次导出相关服务。
+     *
+     * 2.ServiceBean 是 Dubbo 与 Spring 框架进行整合的关键，可以看做是两个框架之间的桥梁。具有同样作用的类还有 ReferenceBean。
+     * ServiceBean 实现了 Spring 的一些拓展接口，有 FactoryBean、ApplicationContextAware、ApplicationListener、DisposableBean 和 BeanNameAware
+     *
+     * 3.Dubbo 使用 URL 作为配置载体，所有的拓展点都是通过 URL 获取配置。
+     * 官方解释：采用 URL 作为配置信息的统一格式，所有扩展点都通过传递 URL 携带配置信息。
+     * @param event
+     */
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        // 是否有延迟导出 && 是否已导出 && 是不是已被取消导出
         if (isDelay() && !isExported() && !isUnexported()) {
             if (logger.isInfoEnabled()) {
                 logger.info("The service ready on spring started. service: " + getInterface());
             }
+            // 导出服务
             export();
         }
     }

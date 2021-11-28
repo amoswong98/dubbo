@@ -65,6 +65,7 @@ public abstract class AbstractZookeeperClient<TargetChildListener> implements Zo
     @Override
     public void create(String path, boolean ephemeral) {
         if (!ephemeral) {
+            // 如果要创建的节点类型非临时节点，那么这里要检测节点是否存在
             if(persistentExistNodePath.contains(path)){
                 return;
             }
@@ -77,6 +78,7 @@ public abstract class AbstractZookeeperClient<TargetChildListener> implements Zo
         if (i > 0) {
             create(path.substring(0, i), false);
         }
+        // 根据 ephemeral 的值创建临时或持久节点
         if (ephemeral) {
             createEphemeral(path);
         } else {

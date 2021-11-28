@@ -27,8 +27,6 @@ import com.alibaba.dubbo.remoting.transport.DecodeHandler;
 
 /**
  * DefaultMessenger
- *
- *
  */
 public class HeaderExchanger implements Exchanger {
 
@@ -41,6 +39,12 @@ public class HeaderExchanger implements Exchanger {
 
     @Override
     public ExchangeServer bind(URL url, ExchangeHandler handler) throws RemotingException {
+        // 创建 HeaderExchangeServer 实例，该方法包含了多步操作，本别如下：
+        //   1. new HeaderExchangeHandler(handler)
+        //	    2. new DecodeHandler(new HeaderExchangeHandler(handler))
+        //   3. Transporters.bind(url, new DecodeHandler(new HeaderExchangeHandler(handler)))
+
+        // 我们仅需关心 Transporters 的 bind 方法逻辑即可
         return new HeaderExchangeServer(Transporters.bind(url, new DecodeHandler(new HeaderExchangeHandler(handler))));
     }
 
